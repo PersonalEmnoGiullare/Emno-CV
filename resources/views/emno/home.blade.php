@@ -294,8 +294,14 @@
     <!-- Contenido del CV -->
     <header id="presentacion">
         <h1>Emmanuel Gonzalez García</h1>
-        <p class="subtitle">Dr en Sistemas Computacionales</p>
-        <p>Desarrollador de software con experiencia en análisis de datos y machine learning. Poseo un doctorado en sistemas computacionales, con experiencia en Python, Django y desarrollo de aplicaciones web y Móviles. Mi formación en biotecnología me proporciona una perspectiva única para abordar problemas de análisis y modelado de datos. Cuento con experiencia como docente dando materias como simulación de procesos e inteligencia artificial, además cuento con experiencia como Freelancer y en el desarrollo de proyectos de implementación de sistemas.</p>
+        <p class="subtitle">Desarrollador de software | Doctor en Sistemas Computacionales | Inteligencia Artificial · Análisis de Datos · Aplicaciones Web</p>
+        <p style="text-align: justify;">
+            Soy desarrollador de software con formación académica sólida y enfoque analítico. Finalicé el doctorado en Sistemas Computacionales (en proceso de titulación), con especialización en desarrollo de aplicaciones web y móviles, análisis de datos e inteligencia artificial.
+            <br>
+            Combino mi experiencia técnica con la docencia en niveles medio superior y superior, impartiendo materias como simulación de procesos, desarrollo de sistemas e IA. También trabajo como freelancer desarrollando soluciones tecnológicas para pequeñas y medianas empresas, lo que me mantiene actualizado en herramientas y lenguajes como Python, Django, Laravel y Angular.
+            <br>
+            Mi formación en biotecnología complementa mi perfil con una visión integral para resolver problemas complejos, desde el modelado de datos hasta la implementación de soluciones funcionales y escalables.
+        </p>
     </header>
 
     <section id="contacto">
@@ -315,7 +321,7 @@
                 <span><strong>Doctorado en Sistemas Computacionales</strong></span>
                 <span>UNISUR - Nov 2023 – Feb 2025 (Título en trámite)</span>
             </div>
-            <p>Promedio: 9.93</p>
+            <!-- <p>Promedio: 9.93</p> -->
         </div>
 
         <div class="job">
@@ -323,7 +329,7 @@
                 <span><strong>Maestría en Educación</strong></span>
                 <span>Universidad CNCI - Agosto 2020 - Agosto 2022</span>
             </div>
-            <p>Promedio: 9.9</p>
+            <!-- <p>Promedio: 9.9</p> -->
         </div>
 
         <div class="job">
@@ -331,7 +337,7 @@
                 <span><strong>Licenciatura en Biotecnología</strong></span>
                 <span>Universidad Autónoma de Querétaro - Agosto 2010 – Diciembre 2014</span>
             </div>
-            <p>Promedio: 7.8</p>
+            <!-- <p>Promedio: 7.8</p> -->
         </div>
     </section>
 
@@ -443,7 +449,8 @@
         </div>
     </section>
     <section id="habilidades-blandas">
-        <h2>Idiomas</h2>
+        <h2>Habilidades Blandas</h2>
+        <h3 class="project-title">Idiomas</h3>
         <ul>
             <li>Español: Nativo</li>
             <li>Inglés: Intermedio (B1)</li>
