@@ -1,14 +1,40 @@
-PS C:\Users\shin_\OneDrive\Documentos\archivos\proyectos\programacion\laravel\emno> git commit -m "Primer commit: proyecto base"
-Author identity unknown
+PS C:\Users\shin_\OneDrive\Documentos\archivos\proyectos\programacion\laravel\emno> php artisan migrate       
+                                                                                                              
+   INFO  Running migrations.  
 
-*** Please tell me who you are.
+  2025_06_24_210105_create_pamp_guerreros_table ............................................... 98.04ms DONE
+  2025_06_24_210539_create_pamp_meta_table ................................................... 111.89ms DONE
+  2025_06_24_211431_create_pamp_area_mejora_table ............................................ 151.92ms DONE
+  2025_06_24_212208_create_pamp_tareas_table ................................................. 108.06ms DONE
+  2025_06_24_213855_create_pamp_horarios_table ................................................ 83.29ms DONE
+  2025_06_24_215545_create_pamp_frases_table .................................................. 88.52ms FAIL
 
-Run
+   Illuminate\Database\QueryException 
 
-  git config --global user.email "you@example.com"
-  git config --global user.name "Your Name"
+  SQLSTATE[HY000]: General error: 1005 Can't create table `db_emno`.`pamp_metas_frases` (errno: 150 "Foreign key constraint is incorrectly formed") (Connection: mysql, SQL: alter table `pamp_metas_frases` add constraint `pamp_metas_frases_pamp_metas_id_foreign` foreign key (`pamp_metas_id`) references `pamp_metas` (`id`) on delete cascade)
 
-to set your account's default identity.
-Omit --global to set the identity only in this repository.
+  at vendor\laravel\framework\src\Illuminate\Database\Connection.php:825
+    821▕                     $this->getName(), $query, $this->prepareBindings($bindings), $e
+    822▕                 );
+    823▕             }
+    824▕
+  ➜ 825▕             throw new QueryException(
+    826▕                 $this->getName(), $query, $this->prepareBindings($bindings), $e           826▕                 $this->getName(), $query, $this->prepareBindings($bindings),    826▕                 $this->getName(), $query, $this->prepareBindings($bindings), $e      826▕                 $this->getName(), $query, $this->prepareBindings($bindings), $e      826▕                 $this->getName(), $query, $this->prepareBindings($bindings), $e      826▕                 $this->getName(), $query, $this->prepareBindings($bindings), $e      827▕             );
+    826▕                 $this->getName(), $query, $this->prepareBindings($bindings), $e    826▕                 $this->getName(), $query, $this->prepareBindings($bindings), $e    827▕             );
+    826▕                 $this->getName(), $query, $this->prepareBindings($bindings), $e  828▕         }
+    827▕             );
+$e
+    827▕             );
+$e
+    827▕             );
+    828▕         }
+    828▕         }
+    829▕     }
 
-fatal: unable to auto-detect email address (got 'shin_@TaliZorah.(none)')
+  1   vendor\laravel\framework\src\Illuminate\Database\Connection.php:571
+      PDOException::("SQLSTATE[HY000]: General error: 1005 Can't create table `db_emno`.`pamp_metas_frases` (errno: 150 "Foreign key constraint is incorrectly formed")")
+
+  2   vendor\laravel\framework\src\Illuminate\Database\Connection.php:571
+      PDOStatement::execute()
+
+PS C:\Users\shin_\OneDrive\Documentos\archivos\proyectos\programacion\laravel\emno>
