@@ -15,6 +15,12 @@
             <a href="#habilidades" class="nav-link">Habilidades tecnicas</a>
             <a href="#proyectos" class="nav-link">Proyectos</a>
             <a href="#habilidades-blandas" class="nav-link">Habilidades blandas</a>
+            @auth
+            <form action="{{route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-primary">Cerrar sesion</button>
+            </form>
+            @endauth
         </div>
 
         <button class="nav-toggle" aria-label="Menú">

@@ -245,6 +245,29 @@
             transform: translateY(-8px) rotate(-45deg);
         }
 
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #3a2368;
+            transform: translateY(-2px);
+        }
+
+
         /* Estilos responsive */
         @media (max-width: 768px) {
             .nav-menu {
