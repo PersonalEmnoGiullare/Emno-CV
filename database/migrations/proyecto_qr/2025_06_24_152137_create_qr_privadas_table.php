@@ -32,12 +32,12 @@ return new class extends Migration
         });
         // generamos indices para mejorar el rendimiento de las consultas
         Schema::table('qr_privadas', function (Blueprint $table) {
-            $table->index('nombre');
-            $table->index('constructora');
-            $table->index('direccion');
-            $table->index('ciudad');
-            $table->index('codigo_postal');
-            $table->index('activa');
+            $table->index('nombre', 'index_qr_p_nombre');
+            $table->index('constructora', 'index_qr_p_constructora');
+            $table->index('direccion', 'index_qr_p_direccion');
+            $table->index('ciudad', 'index_qr_p_ciudad');
+            $table->index('codigo_postal', 'index_qr_p_codigo_postal');
+            $table->index('activa', 'index_qr_p_activa');
             // indices compuestos 
             $table->index(['nombre', 'constructora'], 'index_nombre_constructora');
             $table->index(['direccion', 'ciudad'], 'index_direccion_ciudad');
@@ -49,6 +49,11 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // eliminamos las llaves unicas
+        Schema::table('qr_privadas', function (Blueprint $table) {
+            $table->dropUnique('unique_nombre_constructora');
+            $table->dropUnique('unique_direccion_ciudad');
+        });
         // eliminamos los indices compuestos
         Schema::table('qr_privadas', function (Blueprint $table) {
             $table->dropIndex('index_nombre_constructora');
@@ -56,19 +61,14 @@ return new class extends Migration
         });
         // eliminamos los indices
         Schema::table('qr_privadas', function (Blueprint $table) {
-            $table->dropIndex(['nombre']);
-            $table->dropIndex(['constructora']);
-            $table->dropIndex(['direccion']);
-            $table->dropIndex(['ciudad']);
-            $table->dropIndex(['codigo_postal']);
-            $table->dropIndex(['activa']);
-        });
-        // eliminamos las llaves unicas
-        Schema::table('qr_privadas', function (Blueprint $table) {
-            $table->dropUnique('unique_nombre_constructora');
-            $table->dropUnique('unique_direccion_ciudad');
+            $table->dropIndex('index_qr_p_nombre');
+            $table->dropIndex('index_qr_p_constructora');
+            $table->dropIndex('index_qr_p_direccion');
+            $table->dropIndex('index_qr_p_ciudad');
+            $table->dropIndex('index_qr_p_codigo_postal');
+            $table->dropIndex('index_qr_p_activa');
         });
         // eliminamos la tabla
-        Schema::dropIfExists('privadas');
+        Schema::dropIfExists('qr_privadas');
     }
 };

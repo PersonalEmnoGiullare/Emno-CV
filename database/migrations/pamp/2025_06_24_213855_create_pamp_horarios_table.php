@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('pamp_horarios', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pamp_guerrero_id')->constrained('pamp_guerreros')->onDelete('cascade');
+            $table->foreignId('guerrero_id')->constrained('pamp_guerreros')->onDelete('cascade');
             $table->foreignId('meta_id')->constrained('pamp_metas')->onDelete('cascade');
 
             // Configuración de periodicidad
@@ -32,16 +32,16 @@ return new class extends Migration
         });
         // Generamos indices para mejorar el rendimiento de las consultas
         Schema::table('pamp_horarios', function (Blueprint $table) {
-            $table->index('pamp_guerrero_id');
-            $table->index('meta_id');
+            $table->index('guerrero_id', 'index_pamp_h_guerrero_id');
+            $table->index('meta_id', 'index_pamp_h_meta_id');
         });
         // Generamos un indice compuesto
         Schema::table('pamp_horarios', function (Blueprint $table) {
-            $table->index(['pamp_guerrero_id', 'meta_id'], 'index_pamp_guerrero_meta');
+            $table->index(['guerrero_id', 'meta_id'], 'index_pamp_guerrero_meta');
         });
         // Generamos llaves unicas
         Schema::table('pamp_horarios', function (Blueprint $table) {
-            $table->unique(['pamp_guerrero_id', 'meta_id'], 'unique_pamp_guerrero_meta');
+            $table->unique(['guerrero_id', 'meta_id'], 'unique_pamp_guerrero_meta');
         });
     }
 
@@ -50,19 +50,23 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Eliminamos las llaves foraneas
+        Schema::table('pamp_horarios', function (Blueprint $table) {
+            $table->dropForeign(['guerrero_id']);
+            $table->dropForeign(['meta_id']);
+        });
+        // Eliminamos las llaves unicas
+        Schema::table('pamp_horarios', function (Blueprint $table) {
+            $table->dropUnique('unique_pamp_guerrero_meta');
+        });
         // Eliminamos los indices compuestos
         Schema::table('pamp_horarios', function (Blueprint $table) {
-            $table->dropIndex(['pamp_guerrero_id', 'meta_id']);
+            $table->dropIndex('index_pamp_guerrero_meta');
         });
         // Eliminamos los indices
         Schema::table('pamp_horarios', function (Blueprint $table) {
-            $table->dropIndex(['pamp_guerrero_id']);
-            $table->dropIndex(['meta_id']);
-        });
-        // Eliminamos las llaves foraneas
-        Schema::table('pamp_horarios', function (Blueprint $table) {
-            $table->dropForeign(['pamp_guerrero_id']);
-            $table->dropForeign(['meta_id']);
+            $table->dropIndex('index_pamp_h_guerrero_id');
+            $table->dropIndex('index_pamp_h_meta_id');
         });
         // Eliminamos la tabla
         Schema::dropIfExists('pamp_horarios');

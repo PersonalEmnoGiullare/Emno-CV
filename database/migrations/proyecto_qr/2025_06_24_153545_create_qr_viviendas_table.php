@@ -29,12 +29,12 @@ return new class extends Migration
         });
         // Generamos indices para mejorar el rendimiento de las consultas
         Schema::table('qr_viviendas', function (Blueprint $table) {
-            $table->index('privada_id');
-            $table->index('numero');
-            $table->index('tipo');
-            $table->index('calle');
-            $table->index('seccion');
-            $table->index('disponible');
+            $table->index('privada_id', 'index_qr_v_privada_id');
+            $table->index('numero', 'index_qr_v_numero');
+            $table->index('tipo', 'index_qr_v_tipo');
+            $table->index('calle', 'index_qr_v_calle');
+            $table->index('seccion', 'index_qr_v_seccion');
+            $table->index('disponible', 'index_qr_v_disponible');
             // Indices compuestos
             $table->index(['privada_id', 'calle', 'numero'], 'index_priv_call_num');
         });
@@ -45,26 +45,26 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // eliminamos llaves foraneas
+        Schema::table('qr_viviendas', function (Blueprint $table) {
+            $table->dropForeign(['privada_id']);
+        });
+        // Eliminamos las llaves unicas
+        Schema::table('qr_viviendas', function (Blueprint $table) {
+            $table->dropUnique('unique_priv_call_num');
+        });
         // Eliminamos los indices compuestos
         Schema::table('qr_viviendas', function (Blueprint $table) {
             $table->dropIndex('index_priv_call_num');
         });
         // Eliminamos los indices
         Schema::table('qr_viviendas', function (Blueprint $table) {
-            $table->dropIndex(['privada_id']);
-            $table->dropIndex(['numero']);
-            $table->dropIndex(['tipo']);
-            $table->dropIndex(['calle']);
-            $table->dropIndex(['seccion']);
-            $table->dropIndex(['disponible']);
-        });
-        // Eliminamos las llaves unicas
-        Schema::table('qr_viviendas', function (Blueprint $table) {
-            $table->dropUnique('unique_priv_call_num');
-        });
-        // eliminamos llaves foraneas
-        Schema::table('qr_viviendas', function (Blueprint $table) {
-            $table->dropForeign(['privada_id']);
+            $table->dropIndex('index_qr_v_privada_id');
+            $table->dropIndex('index_qr_v_numero');
+            $table->dropIndex('index_qr_v_tipo');
+            $table->dropIndex('index_qr_v_calle');
+            $table->dropIndex('index_qr_v_seccion');
+            $table->dropIndex('index_qr_v_disponible');
         });
         // Eliminamos la tabla
         Schema::dropIfExists('qr_viviendas');

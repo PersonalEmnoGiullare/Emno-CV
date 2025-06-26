@@ -25,6 +25,22 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+        // Generamos llaves unicas
+        Schema::table('qr_accesos', function (Blueprint $table) {
+            $table->unique(['codigo_qr_id', 'fecha_hora'], 'unique_codigo_qr_fecha_hora');
+        });
+        // Generamos indices para mejorar el rendimiento de las consultas
+        Schema::table('qr_accesos', function (Blueprint $table) {
+            $table->index('codigo_qr_id', 'index_qr_a_codigo_qr_id');
+            $table->index('fecha_hora', 'index_qr_a_fecha_hora');
+            $table->index('num_uso', 'index_qr_a_num_uso');
+            $table->index('dispositivo', 'index_qr_a_dispositivo');
+            $table->index('direccion_ip', 'index_qr_a_direccion_ip');
+            $table->index('ubicacion', 'index_qr_a_ubicacion');
+            $table->index('resultado', 'index_qr_a_resultado');
+            // Generamos indices compuestos
+            $table->index(['codigo_qr_id', 'fecha_hora'], 'index_codigo_qr_fecha_hora');
+        });
     }
 
     /**
@@ -32,27 +48,27 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Eliminamos los indices compuestos
-        Schema::table('qr_accesos', function (Blueprint $table) {
-            $table->dropIndex(['codigo_qr_id', 'fecha_hora']);
-        });
-        // Eliminamos los indices
-        Schema::table('qr_accesos', function (Blueprint $table) {
-            $table->dropIndex(['codigo_qr_id']);
-            $table->dropIndex(['fecha_hora']);
-            $table->dropIndex(['num_uso']);
-            $table->dropIndex(['dispositivo']);
-            $table->dropIndex(['direccion_ip']);
-            $table->dropIndex(['ubicacion']);
-            $table->dropIndex(['resultado']);
-        });
-        // Eliminamos las llaves unicas
-        Schema::table('qr_accesos', function (Blueprint $table) {
-            $table->dropUnique(['codigo_qr_id', 'fecha_hora']);
-        });
         // Eliminamos las llaves foraneas
         Schema::table('qr_accesos', function (Blueprint $table) {
             $table->dropForeign(['codigo_qr_id']);
+        });
+        // Eliminamos las llaves unicas
+        Schema::table('qr_accesos', function (Blueprint $table) {
+            $table->dropUnique('unique_codigo_qr_fecha_hora');
+        });
+        // Eliminamos los indices compuestos
+        Schema::table('qr_accesos', function (Blueprint $table) {
+            $table->dropIndex('index_codigo_qr_fecha_hora');
+        });
+        // Eliminamos los indices
+        Schema::table('qr_accesos', function (Blueprint $table) {
+            $table->dropIndex('index_qr_a_codigo_qr_id');
+            $table->dropIndex('index_qr_a_fecha_hora');
+            $table->dropIndex('index_qr_a_num_uso');
+            $table->dropIndex('index_qr_a_dispositivo');
+            $table->dropIndex('index_qr_a_direccion_ip');
+            $table->dropIndex('index_qr_a_ubicacion');
+            $table->dropIndex('index_qr_a_resultado');
         });
         // Eliminamos la tabla  
         Schema::dropIfExists('qr_accesos');

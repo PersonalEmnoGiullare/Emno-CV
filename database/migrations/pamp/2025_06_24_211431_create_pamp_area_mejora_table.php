@@ -25,9 +25,9 @@ return new class extends Migration
         });
         // Generamos indices para mejorar el rendimiento de las consultas
         Schema::table('pamp_area_mejora', function (Blueprint $table) {
-            $table->index('meta_id');
-            $table->index('nombre');
-            $table->index('dificultad');
+            $table->index('meta_id', 'index_pamp_am_meta_id');
+            $table->index('nombre', 'index_pamp_am_nombre');
+            $table->index('dificultad', 'index_pamp_am_dificultad');
         });
         // Generamos un indice compuesto
         Schema::table('pamp_area_mejora', function (Blueprint $table) {
@@ -41,8 +41,8 @@ return new class extends Migration
         // creamos una tabla de relaciones entre pamp_area_mejora y pamp_guerreros
         Schema::create('pamp_area_mejora_guerreros', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pamp_area_mejora_id')->constrained('pamp_area_mejora')->onDelete('cascade');
-            $table->foreignId('pamp_guerrero_id')->constrained('pamp_guerreros')->onDelete('cascade');
+            $table->foreignId('area_mejora_id')->constrained('pamp_area_mejora')->onDelete('cascade');
+            $table->foreignId('guerrero_id')->constrained('pamp_guerreros')->onDelete('cascade');
             $table->integer('nivel')->default(1);
             $table->bigInteger('exp')->default(1);
             $table->boolean('activa')->default(true);
@@ -52,17 +52,17 @@ return new class extends Migration
         });
         // Generamos indices para mejorar el rendimiento de las consultas
         Schema::table('pamp_area_mejora_guerreros', function (Blueprint $table) {
-            $table->index('pamp_area_mejora_id');
-            $table->index('pamp_guerrero_id');
-            $table->index('nivel');
+            $table->index('area_mejora_id', 'index_pamp_amg_area_mejora_id');
+            $table->index('guerrero_id', 'index_pamp_amg_guerrero_id');
+            $table->index('nivel', 'index_pamp_amg_nivel');
         });
         // Generamos un indice compuesto
         Schema::table('pamp_area_mejora_guerreros', function (Blueprint $table) {
-            $table->index(['pamp_area_mejora_id', 'pamp_guerrero_id'], 'index_area_mejora_guerrero');
+            $table->index(['area_mejora_id', 'guerrero_id'], 'index_area_mejora_guerrero');
         });
         // Generamos llaves unicas
         Schema::table('pamp_area_mejora_guerreros', function (Blueprint $table) {
-            $table->unique(['pamp_area_mejora_id', 'pamp_guerrero_id'], 'unique_area_mejora_guerrero');
+            $table->unique(['area_mejora_id', 'guerrero_id'], 'unique_area_mejora_guerrero');
         });
     }
 
@@ -71,45 +71,46 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Eliminamos las llaves foraneas
+        Schema::table('pamp_area_mejora_guerreros', function (Blueprint $table) {
+            $table->dropForeign(['area_mejora_id']);
+            $table->dropForeign(['guerrero_id']);
+        });
+        // Eliminamos las llaves unicas
+        Schema::table('pamp_area_mejora_guerreros', function (Blueprint $table) {
+            $table->dropUnique('unique_area_mejora_guerrero');
+        });
         // Eliminamos los indices compuestos
         Schema::table('pamp_area_mejora_guerreros', function (Blueprint $table) {
             $table->dropIndex('index_area_mejora_guerrero');
         });
         // Eliminamos los indices
         Schema::table('pamp_area_mejora_guerreros', function (Blueprint $table) {
-            $table->dropIndex(['pamp_area_mejora_id']);
-            $table->dropIndex(['pamp_guerrero_id']);
-            $table->dropIndex(['nivel']);
-        });
-        // Eliminamos las llaves unicas
-        Schema::table('pamp_area_mejora_guerreros', function (Blueprint $table) {
-            $table->dropUnique('unique_area_mejora_guerrero');
-        });
-        // Eliminamos las llaves foraneas
-        Schema::table('pamp_area_mejora_guerreros', function (Blueprint $table) {
-            $table->dropForeign(['pamp_area_mejora_id']);
-            $table->dropForeign(['pamp_guerrero_id']);
+            $table->dropIndex('index_pamp_amg_area_mejora_id');
+            $table->dropIndex('index_pamp_amg_guerrero_id');
+            $table->dropIndex('index_pamp_amg_nivel');
         });
         // Eliminamos la tabla
         Schema::dropIfExists('pamp_area_mejora_guerreros');
 
+
+        // Eliminamos las llaves foraneas
+        Schema::table('pamp_area_mejora', function (Blueprint $table) {
+            $table->dropForeign(['meta_id']);
+        });
+        // Eliminamos las llaves unicas
+        Schema::table('pamp_area_mejora', function (Blueprint $table) {
+            $table->dropUnique('unique_meta_nombre');
+        });
         // Eliminamos los indices compuestos
         Schema::table('pamp_area_mejora', function (Blueprint $table) {
             $table->dropIndex('index_meta_nombre');
         });
         // Eliminamos los indices
         Schema::table('pamp_area_mejora', function (Blueprint $table) {
-            $table->dropIndex(['meta_id']);
-            $table->dropIndex(['nombre']);
-            $table->dropIndex(['dificultad']);
-        });
-        // Eliminamos las llaves unicas
-        Schema::table('pamp_area_mejora', function (Blueprint $table) {
-            $table->dropUnique('unique_meta_nombre');
-        });
-        // Eliminamos las llaves foraneas
-        Schema::table('pamp_area_mejora', function (Blueprint $table) {
-            $table->dropForeign(['meta_id']);
+            $table->dropIndex('index_pamp_am_meta_id');
+            $table->dropIndex('index_pamp_am_nombre');
+            $table->dropIndex('index_pamp_am_dificultad');
         });
         // Eliminamos la tabla
         Schema::dropIfExists('pamp_area_mejora');

@@ -30,13 +30,13 @@ return new class extends Migration
         });
         // Generamos indices para mejorar el rendimiento de las consultas
         Schema::table('qr_codigos', function (Blueprint $table) {
-            $table->index('invitado_id');
-            $table->index('codigo');
-            $table->index('fecha_generacion');
-            $table->index('fecha_expiracion');
-            $table->index('ultima_fecha_uso');
-            $table->index('usos_restantes');
-            $table->index('estado');
+            $table->index('invitado_id', 'index_qr_c_invitado_id');
+            $table->index('codigo', 'index_qr_c_codigo');
+            $table->index('fecha_generacion', 'index_qr_c_fecha_generacion');
+            $table->index('fecha_expiracion', 'index_qr_c_fecha_expiracion');
+            $table->index('ultima_fecha_uso', 'index_qr_c_ultima_fecha_uso');
+            $table->index('usos_restantes', 'index_qr_c_usos_restantes');
+            $table->index('estado', 'index_qr_c_estado');
             // Generamos indices compuestos
             $table->index(['invitado_id', 'codigo'], 'index_invitado_codigo');
             $table->index(['invitado_id', 'fecha_generacion'], 'index_invitado_fecha_generacion');
@@ -51,6 +51,15 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Eliminamos las llaves foraneas
+        Schema::table('qr_codigos', function (Blueprint $table) {
+            $table->dropForeign(['invitado_id']);
+        });
+        // Eliminamos las llaves unicas
+        Schema::table('qr_codigos', function (Blueprint $table) {
+            $table->dropUnique('unique_invitado_codigo');
+            $table->dropUnique('unique_invitado_fecha_generacion');
+        });
         // Eliminamos los indices compuestos
         Schema::table('qr_codigos', function (Blueprint $table) {
             $table->dropIndex('index_invitado_codigo');
@@ -61,22 +70,13 @@ return new class extends Migration
         });
         // Eliminamos los indices
         Schema::table('qr_codigos', function (Blueprint $table) {
-            $table->dropIndex(['invitado_id']);
-            $table->dropIndex(['codigo']);
-            $table->dropIndex(['fecha_generacion']);
-            $table->dropIndex(['fecha_expiracion']);
-            $table->dropIndex(['ultima_fecha_uso']);
-            $table->dropIndex(['usos_restantes']);
-            $table->dropIndex(['estado']);
-        });
-        // Eliminamos las llaves unicas
-        Schema::table('qr_codigos', function (Blueprint $table) {
-            $table->dropUnique('unique_invitado_codigo');
-            $table->dropUnique('unique_invitado_fecha_generacion');
-        });
-        // Eliminamos las llaves foraneas
-        Schema::table('qr_codigos', function (Blueprint $table) {
-            $table->dropForeign(['invitado_id']);
+            $table->dropIndex('index_qr_c_invitado_id');
+            $table->dropIndex('index_qr_c_codigo');
+            $table->dropIndex('index_qr_c_fecha_generacion');
+            $table->dropIndex('index_qr_c_fecha_expiracion');
+            $table->dropIndex('index_qr_c_ultima_fecha_uso');
+            $table->dropIndex('index_qr_c_usos_restantes');
+            $table->dropIndex('index_qr_c_estado');
         });
         // Eliminamos la tabla
         Schema::dropIfExists('qr_codigos');

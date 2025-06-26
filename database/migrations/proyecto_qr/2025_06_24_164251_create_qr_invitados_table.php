@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('apellido_mat', 100);
             $table->string('alias', 100)->nullable();
             $table->string('telefono', 20)->nullable();
-            $table->string('motivo_visita', 200);
             $table->boolean('activo')->default(true);
             $table->timestamps();
             $table->softDeletes();
@@ -33,13 +32,12 @@ return new class extends Migration
         });
         // generamos indices para mejorar el rendimiento de las consultas
         Schema::table('qr_invitados', function (Blueprint $table) {
-            $table->index('residente_id');
-            $table->index('nombre');
-            $table->index('apellido_pat');
-            $table->index('apellido_mat');
-            $table->index('alias');
-            $table->index('telefono');
-            $table->index('motivo_visita');
+            $table->index('residente_id', 'index_qr_i_residente_id');
+            $table->index('nombre', 'index_qr_i_nombre');
+            $table->index('apellido_pat', 'index_qr_i_apellido_pat');
+            $table->index('apellido_mat', 'index_qr_i_apellido_mat');
+            $table->index('alias', 'index_qr_i_alias');
+            $table->index('telefono', 'index_qr_i_telefono');
             // indices compuestos
             $table->index(['residente_id', 'nombre', 'apellido_pat', 'apellido_mat'], 'index_resi_nom_ap');
             $table->index(['residente_id', 'alias'], 'index_resi_alias');
@@ -64,13 +62,13 @@ return new class extends Migration
         });
         // generamos indices para mejorar el rendimiento de las consultas
         Schema::table('qr_vehiculos', function (Blueprint $table) {
-            $table->index('invitado_id');
-            $table->index('marca');
-            $table->index('modelo');
-            $table->index('color');
-            $table->index('placas');
-            $table->index('descripcion');
-            $table->index('activo');
+            $table->index('invitado_id', 'index_qr_v_invitado_id');
+            $table->index('marca', 'index_qr_v_marca');
+            $table->index('modelo', 'index_qr_v_modelo');
+            $table->index('color', 'index_qr_v_color');
+            $table->index('placas', 'index_qr_v_placas');
+            $table->index('descripcion', 'index_qr_v_descripcion');
+            $table->index('activo', 'index_qr_v_activo');
             // indices compuestos
             $table->index(['invitado_id', 'marca', 'modelo', 'color', 'placas'], 'index_inv_veh');
             $table->index(['invitado_id', 'placas'], 'index_inv_placas');
@@ -85,6 +83,15 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Eliminamos las llaves foraneas
+        Schema::table('qr_vehiculos', function (Blueprint $table) {
+            $table->dropForeign(['invitado_id']);
+        });
+        // Eliminamos las llaves unicas
+        Schema::table('qr_vehiculos', function (Blueprint $table) {
+            $table->dropUnique('unique_inv_veh');
+            $table->dropUnique('unique_inv_placas');
+        });
         // Eliminamos los indices compuestos
         Schema::table('qr_vehiculos', function (Blueprint $table) {
             $table->dropIndex('index_inv_veh');
@@ -95,25 +102,27 @@ return new class extends Migration
         });
         // Eliminamos los indices
         Schema::table('qr_vehiculos', function (Blueprint $table) {
-            $table->dropIndex(['invitado_id']);
-            $table->dropIndex(['marca']);
-            $table->dropIndex(['modelo']);
-            $table->dropIndex(['color']);
-            $table->dropIndex(['placas']);
-            $table->dropIndex(['descripcion']);
-            $table->dropIndex(['activo']);
-        });
-        // Eliminamos las llaves unicas
-        Schema::table('qr_vehiculos', function (Blueprint $table) {
-            $table->dropUnique('unique_inv_veh');
-            $table->dropUnique('unique_inv_placas');
-        });
-        // Eliminamos las llaves foraneas
-        Schema::table('qr_vehiculos', function (Blueprint $table) {
-            $table->dropForeign(['invitado_id']);
+            $table->dropIndex('index_qr_v_invitado_id');
+            $table->dropIndex('index_qr_v_marca');
+            $table->dropIndex('index_qr_v_modelo');
+            $table->dropIndex('index_qr_v_color');
+            $table->dropIndex('index_qr_v_placas');
+            $table->dropIndex('index_qr_v_descripcion');
+            $table->dropIndex('index_qr_v_activo');
         });
         // Eliminamos la tabla qr_vehiculos
         Schema::dropIfExists('qr_vehiculos');
+
+
+        // Eliminamos las llaves foraneas
+        Schema::table('qr_invitados', function (Blueprint $table) {
+            $table->dropForeign(['residente_id']);
+        });
+        // Eliminamos las llaves unicas
+        Schema::table('qr_invitados', function (Blueprint $table) {
+            $table->dropUnique('unique_resi_nom_ap');
+            $table->dropUnique('unique_resi_alias');
+        });
         // Eliminamos los indices compuestos
         Schema::table('qr_invitados', function (Blueprint $table) {
             $table->dropIndex('index_resi_nom_ap');
@@ -121,22 +130,12 @@ return new class extends Migration
         });
         // Eliminamos los indices
         Schema::table('qr_invitados', function (Blueprint $table) {
-            $table->dropIndex(['residente_id']);
-            $table->dropIndex(['nombre']);
-            $table->dropIndex(['apellido_pat']);
-            $table->dropIndex(['apellido_mat']);
-            $table->dropIndex(['alias']);
-            $table->dropIndex(['telefono']);
-            $table->dropIndex(['motivo_visita']);
-        });
-        // Eliminamos las llaves unicas
-        Schema::table('qr_invitados', function (Blueprint $table) {
-            $table->dropUnique('unique_resi_nom_ap');
-            $table->dropUnique('unique_resi_alias');
-        });
-        // Eliminamos las llaves foraneas
-        Schema::table('qr_invitados', function (Blueprint $table) {
-            $table->dropForeign(['residente_id']);
+            $table->dropIndex('index_qr_i_residente_id');
+            $table->dropIndex('index_qr_i_nombre');
+            $table->dropIndex('index_qr_i_apellido_pat');
+            $table->dropIndex('index_qr_i_apellido_mat');
+            $table->dropIndex('index_qr_i_alias');
+            $table->dropIndex('index_qr_i_telefono');
         });
         // Eliminamos la tabla qr_invitados
         Schema::dropIfExists('qr_invitados');

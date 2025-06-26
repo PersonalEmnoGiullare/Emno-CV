@@ -25,8 +25,8 @@ return new class extends Migration
         });
         // Generamos indices para mejorar el rendimiento de las consultas
         Schema::table('pamp_guerreros', function (Blueprint $table) {
-            $table->index('usuario_id');
-            $table->index('start_date');
+            $table->index('usuario_id', 'index_pamp_g_usuario_id');
+            $table->index('start_date', 'index_pamp_g_start_date');
         });
         // Generamos un indice compuesto
         Schema::table('pamp_guerreros', function (Blueprint $table) {
@@ -39,22 +39,22 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Eliminamos las llaves foraneas
+        Schema::table('pamp_guerreros', function (Blueprint $table) {
+            $table->dropForeign(['usuario_id']);
+        });
+        // Eliminamos las llaves unicas
+        Schema::table('pamp_guerreros', function (Blueprint $table) {
+            $table->dropUnique('unique_usuario_id');
+        });
         // Eliminamos los indices compuestos
         Schema::table('pamp_guerreros', function (Blueprint $table) {
             $table->dropIndex('index_usuario_start_date');
         });
         // Eliminamos los indices
         Schema::table('pamp_guerreros', function (Blueprint $table) {
-            $table->dropIndex(['usuario_id']);
-            $table->dropIndex(['start_date']);
-        });
-        // Eliminamos las llaves unicas
-        Schema::table('pamp_guerreros', function (Blueprint $table) {
-            $table->dropUnique('unique_usuario_id');
-        });
-        // Eliminamos las llaves foraneas
-        Schema::table('pamp_guerreros', function (Blueprint $table) {
-            $table->dropForeign(['usuario_id']);
+            $table->dropIndex('index_pamp_g_usuario_id');
+            $table->dropIndex('index_pamp_g_start_date');
         });
         // Eliminamos la tabla
         Schema::dropIfExists('pamp_guerreros');

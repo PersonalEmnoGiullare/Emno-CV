@@ -1,17 +1,12 @@
-PS C:\Users\shin_\OneDrive\Documentos\archivos\proyectos\programacion\laravel\emno> php artisan migrate       
-                                                                                                              
-   INFO  Running migrations.  
+PS C:\Users\shin_\OneDrive\Documentos\archivos\proyectos\programacion\laravel\emno> php artisan migrate:refresh
 
-  2025_06_24_210105_create_pamp_guerreros_table ............................................... 98.04ms DONE
-  2025_06_24_210539_create_pamp_meta_table ................................................... 111.89ms DONE
-  2025_06_24_211431_create_pamp_area_mejora_table ............................................ 151.92ms DONE
-  2025_06_24_212208_create_pamp_tareas_table ................................................. 108.06ms DONE
-  2025_06_24_213855_create_pamp_horarios_table ................................................ 83.29ms DONE
-  2025_06_24_215545_create_pamp_frases_table .................................................. 88.52ms FAIL
+   INFO  Rolling back migrations.  
+
+  2025_06_24_220152_create_pamp_logros_table ........................................... 65.31ms FAIL
 
    Illuminate\Database\QueryException 
 
-  SQLSTATE[HY000]: General error: 1005 Can't create table `db_emno`.`pamp_metas_frases` (errno: 150 "Foreign key constraint is incorrectly formed") (Connection: mysql, SQL: alter table `pamp_metas_frases` add constraint `pamp_metas_frases_pamp_metas_id_foreign` foreign key (`pamp_metas_id`) references `pamp_metas` (`id`) on delete cascade)
+  SQLSTATE[42000]: Syntax error or access violation: 1091 Can't DROP INDEX `index_logro_guerrero`; check that it exists (Connection: mysql, SQL: alter table `pamp_guerreros_logros` drop index `index_logro_guerrero`)
 
   at vendor\laravel\framework\src\Illuminate\Database\Connection.php:825
     821▕                     $this->getName(), $query, $this->prepareBindings($bindings), $e
@@ -19,22 +14,15 @@ PS C:\Users\shin_\OneDrive\Documentos\archivos\proyectos\programacion\laravel\em
     823▕             }
     824▕
   ➜ 825▕             throw new QueryException(
-    826▕                 $this->getName(), $query, $this->prepareBindings($bindings), $e           826▕                 $this->getName(), $query, $this->prepareBindings($bindings),    826▕                 $this->getName(), $query, $this->prepareBindings($bindings), $e      826▕                 $this->getName(), $query, $this->prepareBindings($bindings), $e      826▕                 $this->getName(), $query, $this->prepareBindings($bindings), $e      826▕                 $this->getName(), $query, $this->prepareBindings($bindings), $e      827▕             );
-    826▕                 $this->getName(), $query, $this->prepareBindings($bindings), $e    826▕                 $this->getName(), $query, $this->prepareBindings($bindings), $e    827▕             );
-    826▕                 $this->getName(), $query, $this->prepareBindings($bindings), $e  828▕         }
+    826▕                 $this->getName(), $query, $this->prepareBindings($bindings), $e
     827▕             );
-$e
-    827▕             );
-$e
-    827▕             );
-    828▕         }
     828▕         }
     829▕     }
 
   1   vendor\laravel\framework\src\Illuminate\Database\Connection.php:571
-      PDOException::("SQLSTATE[HY000]: General error: 1005 Can't create table `db_emno`.`pamp_metas_frases` (errno: 150 "Foreign key constraint is incorrectly formed")")
+      PDOException::("SQLSTATE[42000]: Syntax error or access violation: 1091 Can't DROP INDEX `index_logro_guerrero`; check that it exists")
 
   2   vendor\laravel\framework\src\Illuminate\Database\Connection.php:571
       PDOStatement::execute()
 
-PS C:\Users\shin_\OneDrive\Documentos\archivos\proyectos\programacion\laravel\emno>
+PS C:\Users\shin_\OneDrive\Documentos\archivos\proyectos\programacion\laravel\emno> 
