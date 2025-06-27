@@ -50,8 +50,33 @@ class QrCodigo extends Model
     // Verificar si el código está activo
     public function estaActivo()
     {
-        return $this->estado === 'activo' &&
-            ($this->usos_restantes > 0) &&
-            (!$this->fecha_expiracion || now()->lt($this->fecha_expiracion));
+        // validamos que la fecha no haya expirado 
+        if ($this->fecha_expiracion && now()->gte($this->fecha_expiracion)) {
+            $this->estado = 'expirado';
+            $this->save();
+            return false;
+        }
+
+        // validamos que el codigo no haya sido usado completamente
+        if ($this->usos_restantes <= 0) {
+            $this->estado = 'usado';
+            $this->save();
+            return false;
+        }
+
+        return $this->estado === 'activo';
+    }
+
+    // funcion para decrementar usos restantes
+    public function decrementUsosRestantes()
+    {
+        if ($this->usos_restantes > 0) {
+            $this->usos_restantes--;
+            if ($this->usos_restantes <= 0) {
+                $this->estado = 'usado';
+            }
+            $this->ultima_fecha_uso = now();
+            $this->save();
+        }
     }
 }

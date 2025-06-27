@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Qr\QrCodigo;
+use App\Models\Qr\QrDispositivo;
 use App\Models\Qr\QrInvitado;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -210,7 +211,7 @@ class CargarBaseDatos extends Command
                                     $query->where('nombre', $data_vivienda['nombre_privada'])
                                         ->where('constructora', $data_vivienda['constructora']);
                                 }
-                            )->first();
+                            )->where('numero', $data_vivienda['numero'])->first();
                             return $vivienda ? $vivienda->id : null;
                         }
                     ],
@@ -294,15 +295,40 @@ class CargarBaseDatos extends Command
                     ],
                     'nombreRegistro' => ['codigo'],
                 ],
+                'qr_dispositivo' => [
+                    'tabla' => 'qr_dispositivo',
+                    'relaciones' => [
+                        'qr_privadas' => [
+                            'modelo' => QrPrivada::class,
+                            'campo' => [
+                                'nombre' => 'nombre_privada',
+                                'constructora' => 'constructora'
+                            ],
+                            'destino' => 'privada_id'
+                        ]
+                    ],
+                    'campos' => [
+                        'clave' => 'clave',
+                        'direccion_ip' => 'direccion_ip'
+                    ],
+                    'nombreRegistro' => ['clave'],
+                ],
                 'qr_accesos' => [
                     'tabla' => 'qr_accesos',
+                    'relaciones' => [
+                        'qr_dispositivo' => [
+                            'modelo' => QrDispositivo::class,
+                            'campo' => [
+                                'clave' => 'clave',
+                                'direccion_ip' => 'direccion_ip'
+                            ],
+                            'destino' => 'dispositivo_id'
+                        ]
+                    ],
                     'campos' => [
                         'codigo_qr_id' => 'codigo_qr_id',
                         'fecha_hora' => 'fecha_hora',
                         'num_uso' => 'num_uso',
-                        'dispositivo' => 'dispositivo',
-                        'direccion_ip' => 'direccion_ip',
-                        'ubicacion' => 'ubicacion',
                         'resultado' => 'resultado'
                     ],
                     'transformaciones' => [

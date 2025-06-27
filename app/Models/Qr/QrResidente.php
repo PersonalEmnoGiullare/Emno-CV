@@ -43,4 +43,10 @@ class QrResidente extends Model
     {
         return $this->belongsTo(User::class, 'usuario_id');
     }
+
+    // obtener el nombre completo del residente
+    public function getNombreCompletoAttribute()
+    {
+        return $this->usuario ? $this->usuario->getFullNameAttribute() : 'Desconocido';
+    }
 }

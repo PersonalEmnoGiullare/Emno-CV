@@ -14,11 +14,9 @@ class QrAcceso extends Model
 
     protected $fillable = [
         'codigo_qr_id',
+        'dispositivo_id',
         'fecha_hora',
         'num_uso',
-        'dispositivo',
-        'direccion_ip',
-        'ubicacion',
         'resultado',
         'fotografias',
         'observaciones',
@@ -36,13 +34,25 @@ class QrAcceso extends Model
         'expirado' => 'Expirado',
     ];
 
-    // Relación con el código QR
+    /**
+     * Relación con el código QR
+     */
     public function codigoQr()
     {
         return $this->belongsTo(QrCodigo::class, 'codigo_qr_id');
     }
 
-    // Relación con el invitado (a través del código QR)
+    /**
+     * Relación con el dispositivo
+     */
+    public function dispositivo()
+    {
+        return $this->belongsTo(QrDispositivo::class, 'dispositivo_id');
+    }
+
+    /**
+     * Relación con el invitado (a través del código QR)
+     */
     public function invitado()
     {
         return $this->hasOneThrough(
@@ -53,5 +63,45 @@ class QrAcceso extends Model
             'codigo_qr_id', // Local key on QrAcceso table
             'invitado_id' // Local key on QrCodigo table
         );
+    }
+
+    /**
+     * Scope para accesos permitidos
+     */
+    public function scopePermitidos($query)
+    {
+        return $query->where('resultado', 'permitido');
+    }
+
+    /**
+     * Scope para accesos denegados
+     */
+    public function scopeDenegados($query)
+    {
+        return $query->where('resultado', 'denegado');
+    }
+
+    /**
+     * Scope para accesos por dispositivo
+     */
+    public function scopePorDispositivo($query, $dispositivoId)
+    {
+        return $query->where('dispositivo_id', $dispositivoId);
+    }
+
+    /**
+     * Scope para accesos en un rango de fechas
+     */
+    public function scopeEntreFechas($query, $desde, $hasta)
+    {
+        return $query->whereBetween('fecha_hora', [$desde, $hasta]);
+    }
+
+    /**
+     * Verifica si el acceso fue permitido
+     */
+    public function fuePermitido(): bool
+    {
+        return $this->resultado === 'permitido';
     }
 }
