@@ -26,6 +26,8 @@ class QrResidente extends Model
         'activo' => 'boolean',
     ];
 
+
+    // ------------------------------- metodos relacionales 
     // Relación con la privada
     public function privada()
     {
@@ -44,6 +46,20 @@ class QrResidente extends Model
         return $this->belongsTo(User::class, 'usuario_id');
     }
 
+    // Relación con invitados
+    public function invitados()
+    {
+        return $this->hasMany(QrInvitado::class, 'residente_id');
+    }
+
+    // Relación con invitados activos (útil para filtrar)
+    public function invitadosActivos()
+    {
+        return $this->hasMany(QrInvitado::class, 'residente_id')->where('activo', true);
+    }
+
+
+    // ------------------------------- metodos para mostrar datos
     // obtener el nombre completo del residente
     public function getNombreCompletoAttribute()
     {
