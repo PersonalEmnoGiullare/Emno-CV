@@ -258,9 +258,40 @@ class CodigoQrController extends Controller
      */
     public function listarCodigos(Request $request)
     {
+        // Validar los datos de entrada
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'usuario_id' => 'required|integer|exists:qr_residentes,usuario_id',
+                'estado' => 'sometimes|nullable|string|in:activo,expirado,usado,cancelado',
+                'invitado_id' => 'sometimes|nullable|integer|exists:qr_invitados,id',
+                'fecha' => 'sometimes|nullable|date_format:Y-m-d',
+            ],
+            [ // mensajes personalizados existentes...
+                'usuario_id.required' => 'Faltan datos obligatorios.',
+                'usuario_id.string' => 'El ID del usuario debe ser una cadena de texto.',
+                'usuario_id.exists' => 'El usuario especificado no existe en nuestros registros.',
+                'estado.string' => 'El estado debe ser una cadena de texto.',
+                'estado.in' => 'El estado debe ser: activo, expirado, usado o cancelado.',
+                'invitado_id.integer' => 'El ID del invitado debe ser un número entero.',
+                'invitado_id.exists' => 'El invitado especificado no existe en nuestros registros.',
+                'fecha.date_format' => 'La fecha debe estar en el formato YYYY-MM-DD.'
+            ]
+        );
+
+        // Si la validación falla, retornar errores
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error en los datos proporcionados',
+                'errors' => $validator->errors(),
+                'error_code' => 'VALIDATION_ERROR'
+            ], 422);
+        }
+
         // Recuperamos el ID del residente por medio del usuario autenticado
         // * Recuperamos el ID del usuario autenticado
-        $UsuarioId = Auth::id();
+        $UsuarioId = $request->usuario_id;
         // $UsuarioId = 5; // Para pruebas unitarias, usar un ID de usuario fijo
         // * Buscamos al residente asociado al usuario
         $residente = QrResidente::where('usuario_id', $UsuarioId)->first();
@@ -269,14 +300,30 @@ class CodigoQrController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'No se encontró un residente asociado al usuario autenticado.',
-                'error_code' => 'RESIDENTE_NOT_FOUND'
+                'error_code' => 'RESIDENTE_NOT_FOUND',
+                'UsuarioId' => $UsuarioId
             ], 404);
         }
         // obtener los códigos QR del residente
         $codigos = QrCodigo::with('invitado.residente.privada')
             ->whereHas('invitado.residente', function ($query) use ($residente) {
                 $query->where('id', $residente->id);
-            })->get();
+            })
+            // Filtrar por estado solo si se proporciona y no está vacío
+            ->when($request->filled('estado'), function ($query) use ($request) {
+                $query->where('estado', $request->estado);
+            })
+            // Filtrar por invitado solo si se proporciona
+            ->when($request->filled('invitado_id'), function ($query) use ($request) {
+                $query->where('invitado_id', $request->invitado_id);
+            })
+            // Filtrar por fecha solo si se proporciona
+            ->when($request->filled('fecha'), function ($query) use ($request) {
+                $query->whereDate('fecha_generacion', $request->fecha);
+            })
+            ->orderBy('fecha_generacion', 'desc')
+            ->get();
+
         // Si no hay códigos, retornar mensaje
         if ($codigos->isEmpty()) {
             return response()->json([
@@ -291,11 +338,11 @@ class CodigoQrController extends Controller
                 'id' => $codigo->id,
                 'codigo' => $codigo->codigo,
                 'fecha_expiracion' => $codigo->fecha_expiracion,
+                'fecha_generacion' => $codigo->fecha_generacion,
                 'usos_restantes' => $codigo->usos_restantes,
                 'estado' => $codigo->estado,
                 'invitado' => $codigo->invitado->getNombreCompletoAttribute(),
-                'residente' => $codigo->invitado->residente->getNombreCompletoAttribute(),
-                'privada' => $codigo->invitado->residente->privada->nombre,
+                'alias' => $codigo->invitado->alias
             ];
         });
         // Retornar la respuesta

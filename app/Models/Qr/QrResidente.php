@@ -58,6 +58,32 @@ class QrResidente extends Model
         return $this->hasMany(QrInvitado::class, 'residente_id')->where('activo', true);
     }
 
+    // Relación con códigos QR a través de invitados
+    public function codigos()
+    {
+        return $this->hasManyThrough(
+            QrCodigo::class,      // Modelo final
+            QrInvitado::class,    // Modelo intermedio
+            'residente_id',       // Foreign key en qr_invitados
+            'invitado_id',        // Foreign key en qr_codigos
+            'id',                 // Local key en qr_residentes
+            'id'                  // Local key en qr_invitados
+        );
+    }
+
+    // Relación con códigos QR activos
+    public function codigosActivos()
+    {
+        return $this->hasManyThrough(
+            QrCodigo::class,
+            QrInvitado::class,
+            'residente_id',
+            'invitado_id',
+            'id',
+            'id'
+        )->where('qr_codigos.estado', 'activo');
+    }
+
 
     // ------------------------------- metodos para mostrar datos
     // obtener el nombre completo del residente

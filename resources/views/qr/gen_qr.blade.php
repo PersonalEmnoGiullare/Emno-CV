@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generador de Códigos QR</title>
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="{{ asset('css/qr/gen_qr.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/qr/barra_nav.css') }}" rel="stylesheet">
 </head>
 
 <body>

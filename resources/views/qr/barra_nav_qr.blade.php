@@ -2,13 +2,13 @@
 <nav id="navbar" class="navbar">
     <div class="nav-container">
         <a href="#" class="nav-logo">{{ $privada_nombre ?? '' }}</a>
+        <!-- Un solo botón de hamburguesa -->
         <button class="nav-toggle" aria-label="Menú">
-            <span class="hamburger"></span>
-            <span class="hamburger"></span>
-            <span class="hamburger"></span>
+            <i class="fas fa-bars hamburger-icon"></i>
         </button>
         <div class="nav-menu">
-            <a href="{{route('qr.generar') }}" class="nav-link active">Generar Qr</a>
+            <a href="{{route('qr.generar') }}" class="nav-link">Generar Qr</a>
+            <a href="{{route('qr.consultar') }}" class="nav-link">Consultar Qr</a>
             @auth
             <form action="{{route('logout') }}" method="POST">
                 @csrf
@@ -16,13 +16,8 @@
             </form>
             @endauth
         </div>
-
-        <button class="nav-toggle" aria-label="Menú">
-            <i class="fas fa-bars"></i>
-        </button>
     </div>
 </nav>
-
 
 <!-- Funciones de control de la barra -->
 @push('scripts')
@@ -30,7 +25,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         const navbar = document.getElementById('navbar');
         const navLinks = document.querySelectorAll('.nav-link');
-        const navToggle = document.querySelector('.nav-toggle');
+        const navToggles = document.querySelectorAll('.nav-toggle');
         const navMenu = document.querySelector('.nav-menu');
 
         let lastScrollY = window.scrollY;
@@ -54,10 +49,13 @@
             highlightActiveLink();
         });
 
-        // Toggle del menú móvil
-        navToggle.addEventListener('click', function() {
-            navMenu.classList.toggle('active');
-            navToggle.classList.toggle('open');
+        // Toggle del menú móvil para todos los botones
+        navToggles.forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+                // this.classList.toggle('open');
+                this.querySelector('.hamburger-icon').classList.toggle('fa-times');
+            });
         });
 
         // Mostrar la barra si el mouse se acerca al borde superior
@@ -71,7 +69,7 @@
         navLinks.forEach(link => {
             link.addEventListener('click', function() {
                 navMenu.classList.remove('active');
-                navToggle.classList.remove('open');
+                document.querySelector('.nav-toggle').classList.remove('open');
 
                 // Scroll suave
                 const targetId = this.getAttribute('href');
@@ -102,12 +100,16 @@
             });
 
             navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${current}`) {
+                if (window.location.href.includes(link.getAttribute('href'))) {
                     link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
                 }
             });
         }
+
+        // Inicializar el estado activo
+        highlightActiveLink();
     });
 </script>
 @endpush

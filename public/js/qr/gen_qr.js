@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const validezHoras = document.getElementById('dias_caducar').value * 24
 
         // generamos los datos a enviar
-        datos = {
+        const datos = {
             // _token: document
             //     .querySelector('meta[name="csrf-token"]')
             //     .getAttribute('content'), \\ pendiente por implementar
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // hacemos la peticion al servidor
-        fetch('api/cqc', {
+        fetch('api/cqc/generar', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -61,20 +61,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             })
             .catch(error => {
-                console.error('Error completo:', error)
-
                 // Mensaje más detallado
                 let errorMessage = 'Error al generar el código QR'
-
-                if (error.serverError) {
-                    console.error('Respuesta del servidor:', error.serverError)
-                    errorMessage += ` (${error.status}): ${
-                        error.serverError.message || 'Error desconocido'
-                    }`
-                } else if (error.status) {
-                    errorMessage += ` (${error.status}: ${error.statusText})`
-                }
-
                 alert(errorMessage)
             })
     })

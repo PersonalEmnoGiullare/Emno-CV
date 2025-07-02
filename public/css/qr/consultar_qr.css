@@ -1,0 +1,344 @@
+:root {
+    --primary-color: #4a6bff;
+    --secondary-color: #f8f9fa;
+    --text-color: #333;
+    --border-radius: 8px;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --success-color: #28a745;
+    --error-color: #dc3545;
+    --warning-color: #ffc107;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f5f7ff;
+    color: var(--text-color);
+    line-height: 1.6;
+    padding: 20px;
+}
+
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    padding: 80px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+h1 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Filtros */
+.filters {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: var(--secondary-color);
+    border-radius: var(--border-radius);
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+}
+
+input,
+select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 14px;
+}
+
+.filter-actions {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    height: 40px;
+}
+
+button:hover {
+    background-color: #3a56d4;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Lista de QR */
+.qr-list-container {
+    margin-top: 20px;
+}
+
+.qr-list-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 120px;
+    padding: 15px;
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 500;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+.qr-list {
+    max-height: 60vh;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+.qr-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 120px;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    align-items: center;
+}
+
+.qr-item:last-child {
+    border-bottom: none;
+}
+
+.qr-item:hover {
+    background-color: var(--secondary-color);
+}
+
+.navbar .hamburger {
+    background: #fff !important;
+    display: block !important;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.status-activo {
+    background-color: rgba(40, 167, 69, 0.2);
+    color: var(--success-color);
+}
+
+.status-usado {
+    background-color: rgba(255, 193, 7, 0.2);
+    color: var(--warning-color);
+}
+
+.status-expirado {
+    background-color: rgba(255, 193, 7, 0.2);
+    color: var(--warning-color);
+}
+
+.status-cancelado {
+    background-color: rgba(220, 53, 69, 0.2);
+    color: var(--error-color);
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #777;
+}
+
+.close-modal:hover {
+    color: var(--primary-color);
+}
+
+.modal-qr {
+    margin: 20px auto;
+    max-width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+}
+#modal-qr-canvas {
+    display: block;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    max-width: 100%;
+    max-height: 100%;
+    box-shadow: var(--box-shadow);
+}
+
+.modal-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+/* Scrollbar personalizada */
+.qr-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.qr-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.qr-list::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.qr-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+
+    .qr-list-header,
+    .qr-item {
+        grid-template-columns: 1fr 1fr 1fr 100px;
+        font-size: 14px;
+        padding: 10px 5px;
+    }
+
+    .view-qr-btn {
+        padding: 5px 8px;
+        font-size: 12px;
+    }
+
+    .filters {
+        padding: 15px 10px;
+    }
+
+    .filter-group {
+        min-width: auto;
+    }
+
+    .filters {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 15px;
+    }
+
+    .qr-list-header,
+    .qr-item {
+        grid-template-columns: 120px 1fr 80px 70px;
+        font-size: 12px;
+    }
+
+    .qr-date {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+
+    .qr-alias {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .status {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 20px 15px;
+    }
+
+    input,
+    select {
+        padding: 8px;
+    }
+
+    button {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 360px) {
+
+    .qr-list-header,
+    .qr-item {
+        grid-template-columns: 100px 1fr 70px 60px;
+        font-size: 11px;
+    }
+
+    .view-qr-btn {
+        padding: 4px 6px;
+        font-size: 11px;
+    }
+}
