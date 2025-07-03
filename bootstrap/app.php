@@ -20,6 +20,8 @@ return Application::configure(basePath: dirname(__DIR__))
         }
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // registro de middleware para manejo del cors
+        $middleware->append(\App\Http\Middleware\HandleCors::class);
         // registro de middleware personalizados
         $middleware->alias([
             'rol' => UserRol::class

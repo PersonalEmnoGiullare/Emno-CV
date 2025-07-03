@@ -1,2 +1,59 @@
-syntax error, unexpected double-quoted string ": ", expecting ")"
-line 47
+2025-06-25 01:23:48.509 ERROR c.e.u.EscribirCSV [pool-2-thread-1] Error leyendo el CSV para la fecha del query IdCatalogo: src\main\resources\csv\fechas_ultimo_registro.csv (The system cannot find the path specified)
+2025-06-25 01:23:48.536 ERROR c.e.D.PadreConeccion [pool-2-thread-1] Error al ejecutar el query queryCatalogosREI
+2025-06-25 01:23:48.536 ERROR c.e.D.PadreConeccion [pool-2-thread-1] Error en la consulta: Select id, id_line, name, status 
+from metrorrey.sch_pry_mty.ope_transport_station 
+where  id_line = 15 AND id > 
+order by id asc;
+2025-06-25 01:23:48.537 ERROR c.e.D.PadreConeccion [pool-2-thread-1] Mensaje: Incorrect syntax near the keyword 'order'.
+2025-06-25 01:23:48.538 ERROR c.e.u.EscribirCSV [pool-2-thread-1] Error leyendo el CSV para la fecha del query queryQR001_TOR: src\main\resources\csv\fechas_ultimo_registro.csv (The system cannot find the path specified)
+2025-06-25 01:23:48.546 ERROR c.e.u.EscribirCSV [pool-2-thread-1] Error leyendo el CSV para la fecha del query queryQR001_VAL: src\main\resources\csv\fechas_ultimo_registro.csv (The system cannot find the path specified)
+2025-06-25 01:23:48.548 ERROR c.e.u.EscribirCSV [pool-2-thread-1] Error leyendo el CSV para la fecha del query queryQR002_TOR: src\main\resources\csv\fechas_ultimo_registro.csv (The system cannot find the path specified)
+2025-06-25 01:23:48.549 ERROR c.e.u.EscribirCSV [pool-2-thread-1] Error leyendo el CSV para la fecha del query queryQR002_VAL: src\main\resources\csv\fechas_ultimo_registro.csv (The system cannot find the path specified)
+2025-06-25 01:23:48.550 ERROR c.e.u.EscribirCSV [pool-2-thread-1] Error leyendo el CSV para la fecha del query queryTM003: src\main\resources\csv\fechas_ultimo_registro.csv (The system cannot find the path specified)
+2025-06-25 01:23:48.551 ERROR c.e.u.EscribirCSV [pool-2-thread-1] Error leyendo el CSV para la fecha del query queryTM004_TRANS: src\main\resources\csv\fechas_ultimo_registro.csv (The system cannot find the path specified)
+2025-06-25 01:23:48.552 ERROR c.e.u.EscribirCSV [pool-2-thread-1] Error leyendo el CSV para la fecha del query queryTM004_TAR_TOR: src\main\resources\csv\fechas_ultimo_registro.csv (The system cannot find the path specified)
+2025-06-25 01:23:48.554 ERROR c.e.u.EscribirCSV [pool-2-thread-1] Error leyendo el CSV para la fecha del query queryTM004_Garcia_G: src\main\resources\csv\fechas_ultimo_registro.csv (The system cannot find the path specified)
+2025-06-25 01:23:48.555 ERROR c.e.u.EscribirCSV [pool-2-thread-1] Error leyendo el CSV para la fecha del query queryTM005: src\main\resources\csv\fechas_ultimo_registro.csv (The system cannot find the path specified)
+2025-06-25 01:23:48.556 ERROR c.e.u.EscribirCSV [pool-2-thread-1] Error leyendo el CSV para la fecha del query queryTM010: src\main\resources\csv\fechas_ultimo_registro.csv (The system cannot find the path specified)
+2025-06-25 01:23:48.557 ERROR c.e.u.EscribirCSV [pool-2-thread-1] Error leyendo el CSV para la fecha del query queryTS008: src\main\resources\csv\fechas_ultimo_registro.csv (The system cannot find the path specified)
+2025-06-25 01:23:48.558 ERROR c.e.u.EscribirCSV [pool-2-thread-1] Error leyendo el CSV para la fecha del query queryTS009: src\main\resources\csv\fechas_ultimo_registro.csv (The system cannot find the path specified)
+2025-06-25 02:21:29.789 ERROR c.e.u.EscribirCSV [pool-2-thread-1] Error escribiendo el CSV: src\main\resources\csv\fechas_ultimo_registro.csv (The system cannot find the path specified)
+2025-06-25 02:22:47.551 ERROR c.e.u.EscribirCSV [pool-2-thread-1] Error escribiendo el CSV: src\main\resources\csv\fechas_ultimo_registro.csv (The system cannot find the path specified)
+2025-06-25 02:34:47.621 ERROR c.e.u.EscribirCSV [pool-2-thread-1] Error escribiendo el CSV: src\main\resources\csv\fechas_ultimo_registro.csv (The system cannot find the path specified)
+2025-06-25 02:36:30.590 ERROR c.e.u.EscribirCSV [pool-2-thread-1] Error escribiendo el CSV: src\main\resources\csv\fechas_ultimo_registro.csv (The system cannot find the path specified)
+2025-06-25 02:49:07.131 ERROR c.e.u.EscribirCSV [pool-2-thread-1] Error escribiendo el CSV: src\main\resources\csv\fechas_ultimo_registro.csv (The system cannot find the path specified)
+2025-06-25 02:55:20.686 ERROR c.e.u.EscribirCSV [pool-2-thread-1] Error escribiendo el CSV: src\main\resources\csv\fechas_ultimo_registro.csv (The system cannot find the path specified)
+2025-06-25 03:02:38.431 ERROR c.e.u.EscribirCSV [pool-2-thread-1] Error escribiendo el CSV: src\main\resources\csv\fechas_ultimo_registro.csv (The system cannot find the path specified)
+2025-06-25 03:10:36.326 ERROR c.e.u.EscribirCSV [pool-2-thread-1] Error escribiendo el CSV: src\main\resources\csv\fechas_ultimo_registro.csv (The system cannot find the path specified)
+2025-06-25 03:15:49.848 ERROR c.e.u.EscribirCSV [pool-2-thread-1] Error escribiendo el CSV: src\main\resources\csv\fechas_ultimo_registro.csv (The system cannot find the path specified)
+2025-06-25 09:22:25.671 ERROR c.e.D.PadreConeccion [pool-2-thread-1] Error al ejecutar el query queryTM010
+2025-06-25 09:22:25.672 ERROR c.e.D.PadreConeccion [pool-2-thread-1] Error en la consulta: Select DISTINCT CAST(sum(topup.cost_card) AS FLOAT)  AS importe, station.id AS cveEstacion,  station.name AS desEstacion,
+CASE 
+    WHEN line.id in (1,2,3) THEN '000071'
+  END AS contribuyente,
+CASE 
+    WHEN line.id in (1,2,3) THEN 'TM-010'
+  END AS cveConcepto,
+  CASE 
+    WHEN line.id in (1,2,3) THEN 'Venta de Tarjeta MiA Estaciones'
+  END AS desConcepto,
+    CASE 
+    WHEN line.id in (1,2,3) THEN 'TARJETA MIA'
+  END AS desTipoCobro,
+    CASE 
+    WHEN line.id in (1,2,3) THEN 'TM'
+  END AS cveTipoCobro,
+  line.id AS cveLinea,
+   CAST(line.name AS VARCHAR(MAX)) AS desLinea,
+   CAST(topup.created_at as DATE) AS fechaMov
+from metrorrey.sch_pry_mty.ope_topup topup
+INNER JOIN metrorrey.sch_pry_mty.ope_afc_equipment equipment
+ON equipment.id = topup.id_equipment
+INNER JOIN  metrorrey.sch_pry_mty.ope_transport_station  station 
+ON station.id = equipment.id_station 
+INNER JOIN metrorrey.sch_pry_mty.ope_transport_line line
+ON line.id = station.id_line 
+WHERE CAST(topup.created_at as DATE) BETWEEN  '' AND  '2025-06-24' AND  line.id in (1,2,3) 
+Group By  station.id, station.name, line.id, CAST(topup.created_at as DATE),  CAST(line.name AS VARCHAR(MAX));
+
+2025-06-25 09:22:25.674 ERROR c.e.D.PadreConeccion [pool-2-thread-1] Mensaje: Socket closed

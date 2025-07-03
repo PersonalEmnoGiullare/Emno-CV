@@ -130,18 +130,31 @@ document.getElementById('reset-filters').addEventListener('click', function () {
 
 // Peticion de tipo fetch para obtener los datos del QR
 async function obtenerDatosQr () {
-    // conectamos con los inputs para obtener los datos a enviar
-    const usuario_id = parseInt(
-        document.querySelector('meta[name="user-id"]').getAttribute('content')
-    )
+    // Obtener el token CSRF (necesario para Sanctum en peticiones web)
+    const csrfToken = document
+        .querySelector('meta[name="csrf-token"]')
+        .getAttribute('content')
 
+    if (!csrfToken) {
+        alert('Error: Token no disponible. Recarga la página.')
+        return
+    }
+
+    // Obtener el token de autenticación (si estás usando Sanctum para API desde el frontend)
+    const apiToken = document.querySelector('meta[name="api-token"]')?.content
+
+    if (!apiToken) {
+        alert('Error: Token no disponible. serrar sesion y volver a ingresar.')
+        return
+    }
+
+    // conectamos con los inputs para obtener los datos a enviar
     const estado = document.getElementById('status_filter').value
     const invitado_id = parseInt(document.getElementById('qr_invitados').value)
     const fecha = document.getElementById('date-filter').value
 
     // generamos los datos a enviar
     const datos = {
-        usuario_id: usuario_id,
         estado: estado,
         invitado_id: invitado_id,
         fecha: fecha
@@ -152,7 +165,9 @@ async function obtenerDatosQr () {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            Accept: 'application/json'
+            Accept: 'application/json',
+            'X-CSRF-TOKEN': csrfToken,
+            Authorization: `Bearer ${apiToken}`
         },
         body: JSON.stringify(datos)
     })
@@ -191,8 +206,7 @@ async function obtenerDatosQr () {
                     ).toLocaleDateString()}</div>
                         <div class="status status-${item.estado}" title = '${
                         item.usos_restantes
-                    }'
->${item.estado}</div>
+                    }'>${item.estado}</div>
                         
                         <button class="view-qr-btn" data-qr="${
                             item.codigo

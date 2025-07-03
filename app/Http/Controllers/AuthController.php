@@ -19,7 +19,7 @@ class AuthController extends Controller
         // validacion de los datos recividos
         // validando los datos
         $request->validate([
-            'username' => 'required|string',
+            'username' => 'required|string|exists:users,username',
             'password' => 'required|string',
         ]);
 
@@ -31,18 +31,16 @@ class AuthController extends Controller
 
         // REvisar credenciales
         if (Auth::attempt($credenciales)) {
-            // modelo de tipo usuario
-            $user = Auth::user();
-
-            // recuperar el rol
-            $rol = $user->rol;
-
-            // Guardar los datos de sesion
-            $request->session()->put("rol_usuario", $rol);
-            $request->session()->put("nom_usuario", $user->name);
 
             // generar una sesion.
             $request->session()->regenerate();
+
+            // Genera token Sanctum para API
+            $token = $request->user()->createToken('web_token')->plainTextToken;
+
+            // Guarda el token en la sesión para usarlo en Blade
+            session(['api_token' => $token]);
+
             // redirigimos al usuario a la ruta que queria acceder
             return redirect()->intended('/');
         }

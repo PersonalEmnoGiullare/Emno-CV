@@ -7,6 +7,28 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Generar QR
     generateBtn.addEventListener('click', function () {
+        // Obtener el token CSRF (necesario para Sanctum en peticiones web)
+        const csrfToken = document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute('content')
+
+        if (!csrfToken) {
+            alert('Error: Token no disponible. Recarga la página.')
+            return
+        }
+
+        // Obtener el token de autenticación (si estás usando Sanctum para API desde el frontend)
+        const apiToken = document.querySelector(
+            'meta[name="api-token"]'
+        )?.content
+
+        if (!apiToken) {
+            alert(
+                'Error: Token no disponible. serrar sesion y volver a ingresar.'
+            )
+            return
+        }
+
         // conectamos con los inputs para obtener los datos a enviar
         const residente_id = parseInt(
             document.getElementById('residente_id').value
@@ -35,8 +57,9 @@ document.addEventListener('DOMContentLoaded', function () {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Accept: 'application/json'
-                // 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content // pendiente por implementar
+                Accept: 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+                Authorization: `Bearer ${apiToken}`
             },
             body: JSON.stringify(datos)
         })

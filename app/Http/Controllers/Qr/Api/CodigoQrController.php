@@ -262,15 +262,11 @@ class CodigoQrController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'usuario_id' => 'required|integer|exists:qr_residentes,usuario_id',
                 'estado' => 'sometimes|nullable|string|in:activo,expirado,usado,cancelado',
                 'invitado_id' => 'sometimes|nullable|integer|exists:qr_invitados,id',
                 'fecha' => 'sometimes|nullable|date_format:Y-m-d',
             ],
             [ // mensajes personalizados existentes...
-                'usuario_id.required' => 'Faltan datos obligatorios.',
-                'usuario_id.string' => 'El ID del usuario debe ser una cadena de texto.',
-                'usuario_id.exists' => 'El usuario especificado no existe en nuestros registros.',
                 'estado.string' => 'El estado debe ser una cadena de texto.',
                 'estado.in' => 'El estado debe ser: activo, expirado, usado o cancelado.',
                 'invitado_id.integer' => 'El ID del invitado debe ser un número entero.',
@@ -291,7 +287,7 @@ class CodigoQrController extends Controller
 
         // Recuperamos el ID del residente por medio del usuario autenticado
         // * Recuperamos el ID del usuario autenticado
-        $UsuarioId = $request->usuario_id;
+        $UsuarioId = Auth::id();
         // $UsuarioId = 5; // Para pruebas unitarias, usar un ID de usuario fijo
         // * Buscamos al residente asociado al usuario
         $residente = QrResidente::where('usuario_id', $UsuarioId)->first();

@@ -8,16 +8,9 @@
 
     {{-- Meta tags de autenticación --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    @auth
-    <meta name="user-authenticated" content="true">
-    <meta name="user-id" content="{{ auth()->id() }}">
-    <meta name="user-role" content="{{ auth()->user()->rol ?? 'guest' }}">
-    <meta name="user-name" content="{{ auth()->user()->name ?? '' }}">
-    @else
-    <meta name="user-authenticated" content="false">
-    <meta name="user-id" content="">
-    <meta name="user-role" content="guest">
-    @endauth
+    @if(session('api_token'))
+    <meta name="api-token" content="{{ session('api_token') }}">
+    @endif
     <title>Consulta de Códigos QR</title>
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
