@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Middleware\RefreshTokenExpiration;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\UserRol;
+use App\Http\Middleware\VerifyRequestSource;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -24,6 +26,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->append(\App\Http\Middleware\HandleCors::class);
         // registro de middleware personalizados
         $middleware->alias([
+            'verify.source' => VerifyRequestSource::class,
+            'refresh.token' => RefreshTokenExpiration::class,
             'rol' => UserRol::class
         ]);
     })

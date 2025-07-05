@@ -12,8 +12,8 @@
     <title>Generador de Códigos QR</title>
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="{{ asset('css/qr/gen_qr.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/qr/barra_nav.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/qr/gen_qr.css') }}?v={{ filemtime(public_path('css/qr/gen_qr.css')) }}" rel="stylesheet">
+    <link href="{{ asset('css/qr/barra_nav.css') }}?v={{ filemtime(public_path('css/qr/barra_nav.css')) }}" rel="stylesheet">
 </head>
 
 <body>
@@ -21,7 +21,7 @@
     @include('qr.barra_nav_qr')
 
     {{-- Contenido principal --}}
-    <div class="container">
+    <div class=" container">
         <h1>Generador de Códigos QR</h1>
 
         <div class="qr-display">
@@ -79,7 +79,7 @@
     </div>
 
     {{-- agregamos el codigo javascript --}}
-    <script src="{{ asset('js/qr/gen_qr.js') }}"></script>
+    <script src="{{ asset('js/qr/gen_qr.js') }}?v={{ filemtime(public_path('js/qr/gen_qr.js')) }}"></script>
     @stack('scripts')
 </body>
 

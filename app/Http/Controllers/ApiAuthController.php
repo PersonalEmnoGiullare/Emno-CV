@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 use App\Models\User;
 
 class ApiAuthController extends Controller
@@ -30,7 +30,7 @@ class ApiAuthController extends Controller
         // Extraer solo las credenciales para autenticación
         $credentials = $request->only(['username', 'password']);
 
-
+        // TODO: existen conflictos entre el inicio de sesion en web y en aplicacion, modificar para que si ya existe una sesion retorne unicamente la informacion y no cree una nueva, los tokens se eliminan despues de 24 horas
         // Intentar autenticar al usuario
         if (!Auth::attempt($credentials)) {
             // Si las credenciales son incorrectas, devolver un error 401
@@ -42,10 +42,25 @@ class ApiAuthController extends Controller
         }
 
         // Si la autenticación es exitosa, generar un token de acceso
-        // * Eliminar tokens anteriores
-        $request->user()->tokens()->delete();
         $user = User::where('username', $request->username)->first();
-        $token = $user->createToken($request->device_name)->plainTextToken;
+
+        // Verificar si ya existe un token para el dispositivo
+        $existingToken = $user->tokens()
+            ->where('name', $request->device_name)
+            ->first();
+
+        if ($existingToken) {
+            // Si el token existe, retornarlo en lugar de crear uno nuevo
+            return response()->json([
+                'success' => true,
+                'token' => $existingToken->plainTextToken,
+                'user' => $user,
+                'token_type' => 'Bearer',
+                'message' => 'Sesión ya activa para este dispositivo'
+            ]);
+        }
+        // Si no existe un token, crear uno nuevo
+        $token = $user->createToken($request->device_name, ['*'],  expiresAt: Carbon::now()->addHours(2))->plainTextToken;
 
         return response()->json([
             'success' => true,

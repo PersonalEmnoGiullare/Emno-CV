@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
@@ -35,8 +36,11 @@ class AuthController extends Controller
             // generar una sesion.
             $request->session()->regenerate();
 
-            // Genera token Sanctum para API
-            $token = $request->user()->createToken('web_token')->plainTextToken;
+            // Generar token Sanctum para la web solo si no existe
+            if (!$request->user()->currentAccessToken()) {
+                $token = $request->user()->createToken('web_token', ['*'], expiresAt: Carbon::now()->addHours(2))->plainTextToken;
+                session(['api_token' => $token]);
+            }
 
             // Guarda el token en la sesión para usarlo en Blade
             session(['api_token' => $token]);

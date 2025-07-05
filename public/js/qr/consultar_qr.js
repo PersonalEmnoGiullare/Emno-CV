@@ -224,7 +224,8 @@ async function obtenerDatosQr () {
         })
         .catch(error => {
             // Mensaje más detallado
-            let errorMessage = 'Error al generar el código QR'
+            let errorMessage =
+                'Error al generar el código QR, recarge o vuelva a iniciar'
             alert(errorMessage)
         })
 }
