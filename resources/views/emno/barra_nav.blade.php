@@ -8,13 +8,14 @@
             <span class="hamburger"></span>
         </button>
         <div class="nav-menu">
-            <a href="#presentacion" class="nav-link active">Presentacion</a>
-            <a href="#contacto" class="nav-link">Contacto</a>
-            <a href="#estudios" class="nav-link">Estudios</a>
-            <a href="#experiencia" class="nav-link">Experiencia laboral</a>
-            <a href="#habilidades" class="nav-link">Habilidades tecnicas</a>
-            <a href="#proyectos" class="nav-link">Proyectos</a>
-            <a href="#habilidades-blandas" class="nav-link">Habilidades blandas</a>
+            <a href="{{route('home')}}#presentacion" class="nav-link active">Presentacion</a>
+            <a href="{{route('home')}}#contacto" class="nav-link">Contacto</a>
+            <a href="{{route('home')}}#estudios" class="nav-link">Estudios</a>
+            <a href="{{route('home')}}#experiencia" class="nav-link">Experiencia laboral</a>
+            <a href="{{route('home')}}#habilidades" class="nav-link">Habilidades tecnicas</a>
+            <a href="{{route('home')}}#proyectos" class="nav-link">Proyectos</a>
+            <a href="{{route('portafolio') }}" class="nav-link">Portafolio</a>
+            <a href="{{route('home')}}#habilidades-blandas" class="nav-link">Habilidades blandas</a>
             @auth
             <form action="{{route('logout') }}" method="POST">
                 @csrf
