@@ -50,7 +50,7 @@ class UserRol
             }
 
             // cerrar sesion
-            Auth::logout();
+            // Auth::logout();
             // invalidar la sesion generada
             $request->session()->invalidate();
             // reestablecer los tokens generados para la sesion

@@ -18,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
             // registro de archivos de rutas para mayor control
             Route::middleware('web')->group(base_path('routes/emno.php'));
             Route::middleware('web')->group(base_path('routes/qr.php'));
+            Route::middleware('web')->group(base_path('routes/rep_metro.php'));
             Route::middleware('api')->group(base_path('routes/qr_api.php'));
         }
     )

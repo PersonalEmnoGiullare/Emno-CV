@@ -14,6 +14,11 @@ use Illuminate\Support\Str;
 use App\Models\Qr\QrPrivada;
 use App\Models\Qr\QrResidente;
 use App\Models\Qr\QrVivienda;
+use App\Models\RepMetro\Departamento;
+use App\Models\RepMetro\RepMetroDepartamento;
+use App\Models\RepMetro\RepMetroEstacion;
+use App\Models\RepMetro\RepMetroPuesto;
+use App\Models\RepMetro\RepMetroTipoPago;
 use App\Models\User;
 
 use function Psy\debug;
@@ -50,16 +55,16 @@ class CargarBaseDatos extends Command
         if (in_array('todos', $tablas)) {
             $this->cargarUsuarios();
             $this->cargarPrivadas();
+            $this->cargarRepMetro();
         } else {
             if (in_array('usuarios', $tablas)) {
                 $this->cargarUsuarios();
             }
             if (in_array('qr_todos', $tablas)) {
                 $this->cargarPrivadas();
-            } else {
-                if (in_array('qr_privadas', $tablas)) {
-                    $this->cargarPrivadas();
-                }
+            }
+            if (in_array('rep_metro', $tablas)) {
+                $this->cargarRepMetro();
             }
         }
     }
@@ -354,6 +359,136 @@ class CargarBaseDatos extends Command
         ];
 
         $this->cargarDatosGenerico('recuperacionDB/qr.json', null, $config);
+    }
+    public function cargarRepMetro()
+    {
+        $config = [];
+
+        $config = [
+            'multiples_tablas' => true,
+            'subconfigs' => [
+                'rep_metro_departamentos' => [
+                    'tabla' => 'rep_metro_departamentos',
+                    'campos' => [
+                        'nombre' => 'nombre',
+                        'descripcion' => 'descripcion'
+                    ],
+                    'nombreRegistro' => ['nombre'],
+                ],
+                'rep_metro_puestos' => [
+                    'tabla' => 'rep_metro_puestos',
+                    'campos' => [
+                        'nombre' => 'nombre',
+                        'descripcion' => 'descripcion'
+                    ],
+                    'nombreRegistro' => ['nombre'],
+                ],
+                'users' => [
+                    'tabla' => 'users',
+                    'campos' => [
+                        'name' => 'name',
+                        'last_name' => 'last_name',
+                        'mothers_last_name' => 'mothers_last_name',
+                        'username' => 'username',
+                        'rol' => 'rol',
+                        'email' => 'email',
+                        'password' => 'password'
+                    ],
+                    'transformaciones' => [
+                        'password' => function ($pass) {
+                            return Hash::make($pass);
+                        },
+                        'email_verified_at' => function () {
+                            return now();
+                        },
+                        'remember_token' => function () {
+                            return Str::random(10);
+                        }
+                    ],
+                    'nombreRegistro' => ['username'],
+                ],
+                'rep_metro_empleado' => [
+                    'tabla' => 'rep_metro_empleado',
+                    'relaciones' => [
+                        'rep_metro_departamentos' => [
+                            'modelo' => RepMetroDepartamento::class,
+                            'campo' => [
+                                'nombre' => 'id_departamento'
+                            ],
+                            'destino' => 'id_departamento'
+                        ],
+                        'rep_metro_puestos' => [
+                            'modelo' => RepMetroPuesto::class,
+                            'campo' => [
+                                'nombre' => 'id_puesto'
+                            ],
+                            'destino' => 'id_puesto'
+                        ],
+                        'users' => [
+                            'modelo' => User::class,
+                            'campo' => [
+                                'username' => 'id_usuario'
+                            ],
+                            'destino' => 'id_usuario'
+                        ]
+                    ],
+                    'campos' => [],
+                    'nombreRegistro' => ['id_usuario', 'id_departamento', 'id_puesto'],
+                ],
+                'rep_metro_estaciones' => [
+                    'tabla' => 'rep_metro_estaciones',
+                    'campos' => [
+                        'nombre' => 'nombre',
+                        'ubicacion' => 'ubicacion'
+                    ],
+                    'nombreRegistro' => ['nombre'],
+                ],
+                'rep_metro_tipos_pago' => [
+                    'tabla' => 'rep_metro_tipos_pago',
+                    'campos' => [
+                        'nombre' => 'nombre',
+                        'descripcion' => 'descripcion'
+                    ],
+                    'nombreRegistro' => ['nombre'],
+                ],
+                'rep_metro_tarifas' => [
+                    'tabla' => 'rep_metro_tarifas',
+                    'campos' => [
+                        'importe' => 'importe',
+                        'fecha_inicio' => 'fecha_inicio',
+                        'fecha_fin' => 'fecha_fin'
+                    ],
+                    'nombreRegistro' => ['fecha_inicio', 'fecha_fin', 'importe'],
+                ],
+                'rep_metro_frecuencias_acceso' => [
+                    'tabla' => 'rep_metro_frecuencias_acceso',
+                    'relaciones' => [
+                        'rep_metro_estaciones' => [
+                            'modelo' => RepMetroEstacion::class,
+                            'campo' => [
+                                'nombre' => 'id_estacion'
+                            ],
+                            'destino' => 'id_estacion'
+                        ],
+                        'rep_metro_tipos_pago' => [
+                            'modelo' => RepMetroTipoPago::class,
+                            'campo' => [
+                                'nombre' => 'id_tipo_pago'
+                            ],
+                            'destino' => 'id_tipo_pago'
+                        ],
+                    ],
+                    'campos' => [
+                        'id_tarifa' => 'id_tarifa',
+                        'periodo' => 'periodo',
+                        'cantidad' => 'cantidad'
+                    ],
+                    'nombreRegistro' => ['id_estacion', 'id_tipo_pago', 'id_tarifa', 'periodo', 'cantidad'],
+                ],
+            ]
+        ];
+
+        $this->cargarDatosGenerico('recuperacionDB/rep_metro.json', null, $config);
     }
 
 
